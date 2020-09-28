@@ -1,10 +1,6 @@
 #include<stdio.h>
-#include<stdlib.h>
+#include "Memory.h" 
 
-void* SaferMalloc(size_t size);
-void SaferFree(void** ptr);
-#define SafeMalloc(size) SaferMalloc((size_t)size)
-#define SafeFree(ptr) SaferFree((void ** )&ptr)
 #ifdef _WIN32
 unsigned char* W2C(wchar_t lz[2]);
 #else
@@ -49,27 +45,3 @@ unsigned char* W2C(wchar_t lz[2])
     return buf;
 ]
 #endif
-void* SaferMalloc(size_t size)
-{
-    void** ptr = NULL;
-
-    ptr = (void**)malloc(16);
-
-    if (ptr == NULL)
-        return NULL;
-
-    *ptr = malloc(size);
-
-    if (*ptr == NULL)
-        return NULL;
-    return *ptr;
-}
-
-void SaferFree(void** ptr)
-{
-    if (ptr == NULL || *ptr == NULL)
-        return;
-
-    free(*ptr);
-    *ptr = NULL;
-}
